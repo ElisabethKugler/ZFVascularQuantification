@@ -15,9 +15,9 @@ Step 7: Quantification of vascular properties (i.e. volume, surface voxels, dens
 
 Optimized for the transgenic fluorescent reporter line Tg(kdrl:HRAS-mCherry).
 
-Example data: will be shared upon request
+Example data: 10.5281/zenodo.4108660; https://zenodo.org/record/4108660#.X47XU9BKizc
 
-https://doi.org/10.5281/zenodo.3978278
+DOI: https://doi.org/10.5281/zenodo.3978278
 
 Queries: kugler.elisabeth[at]gmail.com
 
