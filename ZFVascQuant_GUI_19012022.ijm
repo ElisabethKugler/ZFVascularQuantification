@@ -41,7 +41,7 @@ All rights reserved.
 * 	file name input with and without space
 *	line 197 - falsely included link to github
 *	
-* update 19.01.2021 (Thanks to Guy Malkinson - pers comm)
+* update 19.01.2022 (Thanks to Guy Malkinson - pers comm)
 * 	ROI was required for segmentation > included option to run without; 
 * 	solved issue with downsampling after segmentation without ROI
 * 	512x512 (x,y) downsampling was hard-coded > needs to be made user input
