@@ -1,4 +1,4 @@
-# ZFVascularQuantification
+# ZVQ - Zebrafish Vascular Quantification
 Image analysis pipeline to perform 3D quantification of the total or regional zebrafish brain vasculature using the image analysis software Fiji (https://fiji.sc/).
 
 Publication: Elisabeth C Kugler, James Frost, Vishmi Silva, Karen C Plant, Karishma Chhabria, Timothy James Chico, and Paul Armitage, Development dev.199720. https://doi.org/10.1242/dev.199720 (Jan 2022)
