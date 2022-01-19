@@ -44,7 +44,7 @@ All rights reserved.
 * update 19.01.2021 (Thanks to Guy Malkinson - pers comm)
 * 	ROI was required for segmentation > included option to run without; 
 * 	solved issue with downsampling after segmentation without ROI
-* 	12x512 (x,y) downsampling was hard-coded > needs to be made user input
+* 	512x512 (x,y) downsampling was hard-coded > needs to be made user input
  */
  
 // GUI for selection of steps
