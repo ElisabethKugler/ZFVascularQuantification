@@ -1,9 +1,19 @@
 # ZFVascularQuantification
-Code and workflow documentation for the pre-print https://www.biorxiv.org/content/10.1101/2020.08.06.239905v2 \
+Image analysis pipeline to perform 3D quantification of the total or regional zebrafish brain vasculature using the image analysis software Fiji (https://fiji.sc/).
+
+Publication: Elisabeth C Kugler, James Frost, Vishmi Silva, Karen C Plant, Karishma Chhabria, Timothy James Chico, and Paul Armitage, Development dev.199720. https://doi.org/10.1242/dev.199720 (Jan 2022)
+
+I2K Tutorial: https://www.youtube.com/watch?v=Hb3tDVJ4KXU&t=0s
+
+Example data: 10.5281/zenodo.4108660; https://zenodo.org/record/4108660#.X47XU9BKizc
+
+DOI: https://doi.org/10.5281/zenodo.3978278
+
+Queries: kugler.elisabeth[at]gmail.com
+
+Pre-print https://www.biorxiv.org/content/10.1101/2020.08.06.239905v2 \
 "3D quantification of zebrafish cerebrovascular architecture by automated image analysis of light sheet fluorescence microscopy datasets" by
 Elisabeth C Kugler, James Frost, Vishmi Silva, Karen C Plant, Karishma Chhabria, Timothy James Chico, and Paul Armitage; doi: https://doi.org/10.1101/2020.08.06.239905
-
-Image analysis pipeline to perform 3D quantification of the total or regional zebrafish brain vasculature using the image analysis software Fiji (https://fiji.sc/).
 
 Step 1: .czi to .tiff conversion \
 Step 2: Motion Correction \
@@ -14,13 +24,6 @@ Step 6: Intra-sample symmetry quantification \
 Step 7: Quantification of vascular properties (i.e. volume, surface voxels, density, branching points, network length, network radius, and network complexity)
 
 Optimized for the transgenic fluorescent reporter line Tg(kdrl:HRAS-mCherry).
-
-Example data: 10.5281/zenodo.4108660; https://zenodo.org/record/4108660#.X47XU9BKizc
-
-DOI: https://doi.org/10.5281/zenodo.3978278
-
-Queries: kugler.elisabeth[at]gmail.com
-
 
 REFERENCES <br/>
 [Image understanding and segmentation] <br/>
