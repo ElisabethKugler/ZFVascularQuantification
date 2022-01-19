@@ -42,9 +42,9 @@ All rights reserved.
 *	line 197 - falsely included link to github
 *	
 * update 19.01.2021 (Thanks to Guy Malkinson - pers comm)
-* 	ROI was required for segmentation > included option to run without
-* 	ROI was required for quantification > included option to run without
-
+* 	ROI was required for segmentation > included option to run without; 
+* 	solved issue with downsampling after segmentation without ROI
+* 	12x512 (x,y) downsampling was hard-coded > needs to be made user input
  */
  
 // GUI for selection of steps
@@ -310,7 +310,7 @@ if (TF==choices[1]){
 	while(nImages>0){								// close all windows
 		selectImage(nImages);
 		close();
-		}https://doi.org/10.1242/dev.199720
+		}
 } // end TF aka Sato enhancement
 	
 	
@@ -371,8 +371,9 @@ if (TH==choices[1]){ // yes TH
 
 		// ask WHERE RoiSet is; if "RoiSet exists" selected
 		pathROIs = getDirectory("Tell me in which folder I can find the 'RoiSet.zip' ...");
-		roiManager("Open", pathROIs + "RoiSet.zip");
 		
+		roiManager("Open", pathROIs + "RoiSet.zip");
+	
 		//open ROI set 
 		n = roiManager("count");
 		r=0; 											// counter for ROIset
@@ -441,25 +442,40 @@ if (TH==choices[1]){ // yes TH
 					
 					if (DS==choices[1]){ // perform downsampling here 
 						selectWindow("TH_" + filelistTH[i]);
-						DownSampleDir = path + "/512x512/"; 							// output folder
+						
+						DownSampleDir = path + "/Downsampled/"; 							// output folder
 						File.makeDirectory(DownSampleDir);
-				
+
+												// prompt user for what the output height should be
+						Dialog.create("Select ... ");
+						Dialog.addNumber("Image output height [voxels]:", 512);
+						Dialog.show();
+						ImageOutSize = Dialog.getNumber(); 
+									
 						getDimensions(width, height, channels, slices, frames);
-							// conversion for # slices after conversion
-							factor = height / 512;
+						// conversion for # slices after conversion
+						if(height <= ImageOutSize){
+							print("Image input smaller than the selected output height.");
+						}else {
+							factor = height / ImageOutSize;
+							
 							DownsampledWidth = round(width/factor);
 							DownsampledSlices = round(slices/factor);
 					
 							// actual downsampling step
-							run("Scale...", "x=- y=- z=1.0 width=" + DownsampledWidth + " height=512 depth=" + DownsampledSlices + " interpolation=Bilinear average process create");
-					
-							saveAs("Tiff", DownSampleDir + "512x5112_" + filelistTH[i]);
+							run("Scale...", "x=- y=- z=1.0 width=" + DownsampledWidth + " height=" + ImageOutSize + " depth=" + DownsampledSlices + " interpolation=Bilinear average process create");
+							
+							setThreshold(123, 255);
+							setOption("BlackBackground", false);
+							run("Make Binary", "method=Default background=Default");
+							
+							saveAs("Tiff", DownSampleDir + "Downsampled_" + filelistTH[i]);
 							run("Invert", "stack");
 							run("Z Project...", "projection=[Max Intensity]");
 							run("Invert");
-							saveAs("Jpeg", DownSampleDir + "MAX_512x5112_" + filelistTH[i]);
+							saveAs("Jpeg", DownSampleDir + "MAX_Downsampled_" + filelistTH[i]);
 							close();
-							run("Invert", "stack");
+						}
 								
 					}
 	
@@ -534,6 +550,8 @@ if (TH==choices[1]){ // yes TH
 		Dialog.addChoice("What do you want to do after the segmentation?:", THChoices);
 		Dialog.show();
 		whatAboutTH = Dialog.getChoice(); 
+
+
 
 		if(whatAboutTH==THChoices[0]){	
 			print("You chose to cancel.");	
@@ -611,24 +629,39 @@ if (TH==choices[1]){ // yes TH
 						run("Duplicate...", "title=forDS duplicate");
 						selectWindow("forDS");
 						
-						DownSampleDir = path + "/512x512/"; 							// output folder
+						DownSampleDir = path + "/Downsampled/"; 							// output folder
 						File.makeDirectory(DownSampleDir);
-				
+
+						// prompt user for what the output height should be
+						Dialog.create("Select ... ");
+						Dialog.addNumber("Image output height [voxels]:", 512);
+						Dialog.show();
+						ImageOutSize = Dialog.getNumber(); 
+									
 						getDimensions(width, height, channels, slices, frames);
-							// conversion for # slices after conversion
-							factor = height / 512;
+						// conversion for # slices after conversion
+						if(height <= ImageOutSize){
+							print("Image input smaller than the selected output height.");
+						}else {
+							factor = height / ImageOutSize;
+							
 							DownsampledWidth = round(width/factor);
 							DownsampledSlices = round(slices/factor);
 					
 							// actual downsampling step
-							run("Scale...", "x=- y=- z=1.0 width=" + DownsampledWidth + " height=512 depth=" + DownsampledSlices + " interpolation=Bilinear average process create");
-					
-							saveAs("Tiff", DownSampleDir + "512x512_" + filelistTH[i]);
+							run("Scale...", "x=- y=- z=1.0 width=" + DownsampledWidth + " height=" + ImageOutSize + " depth=" + DownsampledSlices + " interpolation=Bilinear average process create");
+							
+							setThreshold(123, 255);
+							setOption("BlackBackground", false);
+							run("Make Binary", "method=Default background=Default");
+							
+							saveAs("Tiff", DownSampleDir + "Downsampled_" + filelistTH[i]);
 							run("Invert", "stack");
 							run("Z Project...", "projection=[Max Intensity]");
 							run("Invert");
-							saveAs("Jpeg", DownSampleDir + "MAX_512x512_" + filelistTH[i]);
+							saveAs("Jpeg", DownSampleDir + "MAX_Downsampled_" + filelistTH[i]);
 							close();
+						}
 							
 					}
 	
@@ -1195,7 +1228,7 @@ if (VascQ==choices[1]){
 ///// Downsampling /////
 	if(downSampled==choices[0]){ // data are not down-sampled 
 		// -> run downsampling
-		DownSampleDir = path + "/512x512/"; 							// output folder
+		DownSampleDir = path + "/Downsampled/"; 							// output folder
 		File.makeDirectory(DownSampleDir);
 		// prompt to open ROIset 
 		pathROIs = getDirectory("Tell me in which folder I can find the ROIset for down-sampling...");
@@ -1230,24 +1263,38 @@ if (VascQ==choices[1]){
 					// get depth aka # slices
 					getDimensions(width, height, channels, slices, frames);
 					// conversion for # slices after conversion
-					factor = height / 512;
-					DownsampledWidth = round(width/factor);
-					DownsampledSlices = round(slices/factor);
+
+					// prompt user for what the output height should be
+					Dialog.create("Select ... ");
+					Dialog.addNumber("Image output height [voxels]:", 512);
+					Dialog.show();
+					ImageOutSize = Dialog.getNumber(); 
+									
+					getDimensions(width, height, channels, slices, frames);
+					// conversion for # slices after conversion
+					if(height <= ImageOutSize){
+							print("Image input smaller than the selected output height.");
+						}else {
+							factor = height / ImageOutSize;
+							
+							DownsampledWidth = round(width/factor);
+							DownsampledSlices = round(slices/factor);
 					
-					// actual downsampling step
-					run("Scale...", "x=- y=- z=1.0 width=" + DownsampledWidth + " height=512 depth=" + DownsampledSlices + " interpolation=Bilinear average process create");
-					saveAs("Tiff", DownSampleDir + filelistQuant[d]);
-					setThreshold(123, 255);
-					setOption("BlackBackground", false);
-					run("Make Binary", "method=Default background=Default");
-					run("Invert", "stack");
-					run("Z Project...", "projection=[Max Intensity]");		
-					//run("Invert");
-					saveAs("Jpeg", DownSampleDir + "MAX_" + filelistQuant[d]);
-					run("Close");
-					
-					close();
-					close();
+							// actual downsampling step
+							run("Scale...", "x=- y=- z=1.0 width=" + DownsampledWidth + " height=" + ImageOutSize + " depth=" + DownsampledSlices + " interpolation=Bilinear average process create");
+							
+							setThreshold(123, 255);
+							setOption("BlackBackground", false);
+							run("Make Binary", "method=Default background=Default");
+							
+							saveAs("Tiff", DownSampleDir + "Downsampled_" + filelistTH[i]);
+							run("Invert", "stack");
+							run("Z Project...", "projection=[Max Intensity]");
+							run("Invert");
+							saveAs("Jpeg", DownSampleDir + "MAX_Downsampled_" + filelistTH[i]);
+							close();
+						}
+
 			}
 		}
 }
