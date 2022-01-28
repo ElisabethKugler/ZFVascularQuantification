@@ -1393,6 +1393,7 @@ if (VascQ==choices[1]){
 					
 				selectWindow("LUTFire_EDM");
 				
+				DiaArray = newArray(); 
 			// .. use image properties and brightness/intensity to quantify width at the respective vx in microns	
 				for (y = 0; y < height; y++) {
 					for (x = 0; x < width; x++) {
@@ -1400,11 +1401,17 @@ if (VascQ==choices[1]){
 							if (properties != 0){ 				 // skip if intensity value under 30-ish?
 								 		counter++;
 								 		total += properties; 
+								 		DiaArray = Array.concat(DiaArray, properties); // 16 e.g. total nr or ROIs
 										//value = properties * 1.15;
 										//setPixel(x, y, value);
 								}
 						}
 					}
+					
+			Array.show(DiaArray);
+			saveAs("Results", AnalysisOutputDir + "Dia Distribution Stats.csv");
+
+
 			
 					average = (total/counter); // 
 					saveAs("Tiff", AnalysisOutputDir + "MAX_Dia_" + short);  // stack
