@@ -1409,7 +1409,7 @@ if (VascQ==choices[1]){
 					}
 					
 			Array.show(DiaArray);
-			saveAs("Results", AnalysisOutputDir + "Dia Distribution Stats.csv");
+			saveAs("Results", AnalysisOutputDir + short + "Dia Distribution Stats.csv");
 
 
 			
