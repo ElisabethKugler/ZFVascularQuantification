@@ -27,10 +27,10 @@ setForegroundColor(255, 255, 255);
 for (i=0; i< filelist.length; i++) {   
 	if (endsWith(filelist[i], ".tif")) {
 		open(filelist[i]);
-		run("Convert to Mask", "method=Default background=Dark");
-// Save as Tiff Stack
-		selectWindow(filelist[i]);
+		setThreshold(0, 119);
+		run("Make Binary", "method=Otsu background=Dark black");
 		run("Invert", "stack");
+		run("NIfTI-1", "save=" + OutDir + filelist[i] + ".nii");
 		saveAs("Tiff", OutDir + filelist[i]);
 		}
  }
