@@ -1378,8 +1378,11 @@ if (VascQ==choices[1]){
 			run("Skeletonize (2D/3D)"); // remove spurious branches in 2D 
 			saveAs("Tiff", AnalysisOutputDir + "MAX_Skel_" + short); // MIP
 			
+			run("Duplicate...", "title=ForDiaNew duplicate"); // for skeletonization later
+
+			
 			///// merge 2D skel and 2D distance map for diameter measurements /////
-			imageCalculator("AND create", "MAX_" + short + "_EDT.tif","MAX_Skel_" + meep);
+			imageCalculator("AND create", "MAX_" + short + "_EDT.tif","ForDiaNew");
 			run("Fire");
 			saveAs("Tiff", AnalysisOutputDir + "MAX_LUTFire_EDM_Skel_" + short);  // stack
 			rename("LUTFire_EDM");
