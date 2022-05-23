@@ -781,13 +781,16 @@ if (InterSReg==choices[1]){
 				// measure similarity before registration
 				
 				repTemplate = replace(template, ".tif", "");
-				repMoving = replace(filelistReg[i], ".tif", "");     
+				rename("template");
+				repMoving = replace(filelistReg[i], ".tif", "");    
+				rename("moving");
 				
-				run("Label Overlap Measures", "source=" + repMoving + " target=" + repTemplate + " overlap jaccard dice volume");
+				
+				run("Label Overlap Measures", "source=moving target=template overlap jaccard dice volume");
 				saveAs("Results",  RegDir + repMoving + "_Unregistered_JacDicOv.csv");
 
 				// registration
-				selectWindow(filelistReg[i]);
+				selectWindow("moving");
 				run("Rigid Registration", "initialtransform=[] n=1 tolerance=20 level=7 stoplevel=4 materialcenterandbbox=[] showtransformed template=" + template + " measure=Euclidean");
 				selectWindow("transformed");
 				run("Invert", "stack");
@@ -799,8 +802,8 @@ if (InterSReg==choices[1]){
 				saveAs("Tiff", RegDir + "InterSReg_" + filelistReg[i]);
 				
 				repMovingAfter = replace("InterSReg_" + filelistReg[i], ".tif", "");    
-			 
-			 	run("Label Overlap Measures", "source=" + repMovingAfter + " target=" + repTemplate + " overlap jaccard dice volume");
+			 	rename("movingAfter");
+			 	run("Label Overlap Measures", "source=movingAfter target=template overlap jaccard dice volume");
 				saveAs("Results",  RegDir + repMovingAfter + "_Registered_JacDicOv.csv");
 				
 				// create MIP
@@ -1003,6 +1006,7 @@ for (m=0; m< filelistMidline.length; m++) {
 				close(); // close histogram
 				// save as tiff
 				saveAs("Tiff", LRDir + "LVol_" + filelistMidline[m]);
+				rename("leftVol");
 				// create MIP
 				run("Z Project...", "projection=[Max Intensity]");
 				saveAs("Jpeg", LRDir + "MAX_LVol_" + filelistMidline[m]);
@@ -1036,6 +1040,7 @@ for (m=0; m< filelistMidline.length; m++) {
 				close(); // close histogram
 				// save as tiff		
 				saveAs("Tiff", LRDir + "RVol_" + filelistMidline[m]);
+				rename("rightVol");
 				// create MIP
 				run("Z Project...", "projection=[Max Intensity]");
 				saveAs("Jpeg", LRDir + "MAX_RVol_" + filelistMidline[m]);
@@ -1043,8 +1048,9 @@ for (m=0; m< filelistMidline.length; m++) {
 
 ///// SIMILARITY MEASUREMENTS /////
 				// get them
-				rep = replace(filelistMidline[m], ".tif", "");     
-				run("Label Overlap Measures", "source=" + "RVol_" + rep + " target=" + "LVol_" + rep + " overlap jaccard dice volume");
+				rep = replace(filelistMidline[m], ".tif", "");     		
+
+				run("Label Overlap Measures", "source=rightVol target=leftVol overlap jaccard dice volume");
 				saveAs("Results",  LRDir + rep + "JacDicOv.csv");
 				//close();
 
@@ -1118,6 +1124,7 @@ for (m=0; m< filelistMidline.length; m++) {
 				close(); // close histogram
 				// save as tiff		
 				saveAs("Tiff", LRDir + "RVol_" + filelistMidline[m]);
+				rename("rightVol");
 				// create MIP
 				run("Z Project...", "projection=[Max Intensity]");
 				saveAs("Jpeg", LRDir + "MAX_RVol_" + filelistMidline[m]);
@@ -1146,6 +1153,7 @@ for (m=0; m< filelistMidline.length; m++) {
 				close(); // close histogram
 				// save as tiff
 				saveAs("Tiff", LRDir + "LVol_" + filelistMidline[m]);
+				rename("leftVol");
 				// create MIP
 				run("Z Project...", "projection=[Max Intensity]");
 				saveAs("Jpeg", LRDir + "MAX_LVol_" + filelistMidline[m]);
@@ -1153,7 +1161,7 @@ for (m=0; m< filelistMidline.length; m++) {
 
 ///// SIMILARITY MEASUREMENTS /////
 				rep = replace(filelistMidline[m], ".tif", "");     
-				run("Label Overlap Measures", "source=" + "RVol_" + rep + " target=" + "LVol_" + rep + " overlap jaccard dice volume");
+				run("Label Overlap Measures", "source=rightVol target=leftVol overlap jaccard dice volume");
 				saveAs("Results",  LRDir + rep + "JacDicOv.csv");
 				//close();
 
