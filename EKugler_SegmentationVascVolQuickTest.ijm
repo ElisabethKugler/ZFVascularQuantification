@@ -22,7 +22,6 @@ All rights reserved.
 
 // input and output path
 path = getDirectory("Input Folder"); 
-outputFolder = getDirectory("Output Folder");
 filelist = getFileList(path); 
 
 // create file to write volume measurements
@@ -54,25 +53,9 @@ for (i=0; i< filelist.length; i++) {
 		preVoxelDepth = voxelDepth;
 
 		voxelVol= (prePixelWidth * prePixelHeight * preVoxelDepth);
-		
-//		run("8-bit");
-//		setAutoThreshold("Default dark");
-//		run("Threshold...");
-//		setThreshold(4, 255); // threshold to be changed if other image acquisition settings
-//		setOption("BlackBackground", false);
-//		run("Convert to Mask", "method=Default background=Dark");
-	
-	// re-set original image values
-		run("Properties...", "channels=" + preChannels + " slices=" + preSlices + " frames=" + preFrames +" unit=µm pixel_width=" + prePixelWidth + " pixel_height=" + prePixelHeight + " voxel_depth=" + preVoxelDepth);
-	// Save segmented stack as tiff stack
-		saveAs("Tiff", outputFolder + "TH_" + filelist[i]);
-	// create MIP
-		run("Z Project...", "projection=[Max Intensity]");
-		saveAs("Jpeg", outputFolder + filelist[i]);
-        run("Close");
 
 //vascular volume [vx] quantification - ROI from MIPs
-        selectWindow("TH_" + filelist[i]);
+        selectWindow(filelist[i]);
         name = getTitle();
         rename("x");
 	//iterate through ROI set 
