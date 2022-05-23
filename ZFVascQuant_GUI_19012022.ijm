@@ -72,7 +72,7 @@ singleMulti = newArray("Single-colour", "Dual-Colour");
 
 // Inter-sample registration
 	Dialog.addChoice("(5) Inter-sample registration:", choices);
-	Dialog.addChoice("Template exists ('template' * should be in folder 'TH'):", choices);
+	Dialog.addChoice("Template exists ('template' should be in folder 'TH'; other files to start with 'TH'):", choices);
 
 // Intra-sample symmetry
 	Dialog.addChoice("(6) Intra-sample symmetry ('RoiSetLine.zip' * should be in the same folder):", choices);
@@ -727,7 +727,8 @@ if (InterSReg==choices[1]){
 
 	if (regTemplate==choices[1]){ // template exists
 		// get template 
-		path = THDir;
+		//path = THDir;
+		path = path;
 		filelistReg = getFileList(path); 
 
 		open(path + "template.tif"); // Oct 2020
@@ -777,7 +778,7 @@ if (InterSReg==choices[1]){
 				repTemplate = replace(template, ".tif", "");
 				repMoving = replace(filelistReg[i], ".tif", "");     
 				
-				run("Label Overlap Measures", "source=" + repMoving + " target=" + repTemplate + " overlap jaccard dice");
+				run("Label Overlap Measures", "source=" + repMoving + " target=" + repTemplate + " overlap jaccard dice volume");
 				saveAs("Results",  RegDir + repMoving + "_Unregistered_JacDicOv.csv");
 
 				// registration
@@ -794,7 +795,7 @@ if (InterSReg==choices[1]){
 				
 				repMovingAfter = replace("InterSReg_" + filelistReg[i], ".tif", "");    
 			 
-				run("Label Overlap Measures", "source=" + repMovingAfter + " target=" + repTemplate + " overlap jaccard dice");
+			 	run("Label Overlap Measures", "source=" + repMovingAfter + " target=" + repTemplate + " overlap jaccard dice volume");
 				saveAs("Results",  RegDir + repMovingAfter + "_Registered_JacDicOv.csv");
 				
 				// create MIP
@@ -1038,7 +1039,7 @@ for (m=0; m< filelistMidline.length; m++) {
 ///// SIMILARITY MEASUREMENTS /////
 				// get them
 				rep = replace(filelistMidline[m], ".tif", "");     
-				run("Label Overlap Measures", "source=" + "RVol_" + rep + " target=" + "LVol_" + rep + " overlap jaccard dice");
+				run("Label Overlap Measures", "source=" + "RVol_" + rep + " target=" + "LVol_" + rep + " overlap jaccard dice volume");
 				saveAs("Results",  LRDir + rep + "JacDicOv.csv");
 				//close();
 
@@ -1147,7 +1148,7 @@ for (m=0; m< filelistMidline.length; m++) {
 
 ///// SIMILARITY MEASUREMENTS /////
 				rep = replace(filelistMidline[m], ".tif", "");     
-				run("Label Overlap Measures", "source=" + "RVol_" + rep + " target=" + "LVol_" + rep + " overlap jaccard dice");
+				run("Label Overlap Measures", "source=" + "RVol_" + rep + " target=" + "LVol_" + rep + " overlap jaccard dice volume");
 				saveAs("Results",  LRDir + rep + "JacDicOv.csv");
 				//close();
 
